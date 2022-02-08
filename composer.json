@@ -1,0 +1,31 @@
+{
+    "name": "xidanko/php-jasper",
+    "description": "Jasper report integration for laravel",
+    "keywords": ["jasper", "jasper php", "php report", "laravel jasper"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "XiDanko\\Jasper\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jalal Al-Mussawi",
+            "email": "xidanko07@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "XiDanko\\Jasper\\JasperServiceProvider"
+            ],
+            "aliases": {
+                "Jasper": "XiDanko\\Jasper\\Facades\\Jasper"
+            }
+        }
+    }
+}
