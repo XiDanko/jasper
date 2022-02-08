@@ -80,6 +80,7 @@ class Jasper
     {
         $reportPath = config('jasper.relative_path') ? Storage::path($report) : $report;
         if (!file_exists($reportPath)) throw new ReportNotFoundException("Report file not found in $reportPath");
+        return $reportPath;
     }
 
     private function validateParameters(array $parameters)
