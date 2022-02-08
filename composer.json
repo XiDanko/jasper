@@ -1,5 +1,5 @@
 {
-    "name": "xidanko/php-jasper",
+    "name": "xidanko/jasper",
     "description": "Jasper report integration for laravel",
     "keywords": ["jasper", "jasper php", "php report", "laravel jasper"],
     "type": "library",
