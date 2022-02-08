@@ -17,8 +17,6 @@ class JasperServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__ . '/../config/config.php' => config_path('jasper.php')], 'config');
-        }
+        $this->publishes([__DIR__ . '/../config/config.php' => config_path('jasper.php')], 'jasper-config');
     }
 }
