@@ -78,7 +78,7 @@ class Jasper
 
     private function getReportPath($report)
     {
-        $reportPath = config('jasper.relative_path') ? Storage::path($report) : $report;
+        $reportPath = Storage::path($report);
         if (!file_exists($reportPath)) throw new ReportNotFoundException("Report file not found in $reportPath");
         return $reportPath;
     }
