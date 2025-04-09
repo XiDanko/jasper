@@ -251,7 +251,7 @@ class PHPJasper
             throw new Exception\ErrorCommandExecutable(null, 0, null, $output);
         }
 
-        return $output;
+        return implode("\n", $output);
     }
 
     /**
