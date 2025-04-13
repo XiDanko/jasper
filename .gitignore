@@ -1,0 +1,8 @@
+/vendor
+/tests/log
+phpunit.xml
+*.jasper
+*.cache
+
+## PHPStorm
+.idea/
