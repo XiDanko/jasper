@@ -1,0 +1,28 @@
+{
+    "name": "xidanko/jasper",
+    "description": "Jasperstarter wrapper for laravel.",
+    "keywords": ["jaspersoft", "jasperstarter", "laravel"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "XiDanko\\Jasper\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jalal Al-Mussawi",
+            "email": "xidanko07@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "XiDanko\\Jasper\\JasperServiceProvider"
+            ]
+        }
+    }
+}
