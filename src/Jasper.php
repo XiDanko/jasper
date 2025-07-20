@@ -11,7 +11,6 @@ class Jasper
 {
     private string $jasperStarter;
     private string $command;
-    private string $reportPath;
     private string $dbDriver, $dbUsername, $dbPassword, $dbHost, $dbPort, $dbName;
 
     public function __construct()
@@ -31,20 +30,17 @@ class Jasper
     }
 
 
-    public function process(string $report): Jasper
+    public function process(string $reportPath, array $parameters = []): Jasper
     {
-        $this->reportPath = $this->getReportPath($report);
+        if (!file_exists($reportPath)) throw new ReportNotFoundException("Report file not found in $reportPath");
 
-        $this->command = "$this->jasperStarter process $this->reportPath -t $this->dbDriver -u $this->dbUsername -p $this->dbPassword -H $this->dbHost -n $this->dbName --db-port $this->dbPort";
-        return $this;
-    }
+        $this->command = "\"$this->jasperStarter\" process \"$reportPath\" -t $this->dbDriver -u $this->dbUsername -p $this->dbPassword -H $this->dbHost -n $this->dbName --db-port $this->dbPort";
 
-    public function withParameters(array $parameters, bool $validate = false): Jasper
-    {
-        if ($validate) $this->validateParameters($parameters);
-        $this->command.= ' -P';
-        foreach($parameters as $name => $value) {
-            $this->command.= " $name=\"$value\"";
+        if (!empty($parameters)) {
+            $this->command.= ' -P';
+            foreach($parameters as $name => $value) {
+                $this->command.= " $name=\"$value\"";
+            }
         }
         return $this;
     }
@@ -59,7 +55,7 @@ class Jasper
     {
         $tempPath = tempnam(sys_get_temp_dir(), 'jasperreport_');
 
-        $this->command.= " -f pdf -o $tempPath";
+        $this->command.= " -f pdf -o \"$tempPath\"";
 
         $this->execute();
         $data = base64_encode(file_get_contents($tempPath . '.pdf'));
@@ -67,33 +63,9 @@ class Jasper
         return $data;
     }
 
-    public function execute(): array
+    private function execute(): array
     {
         exec($this->command, $output);
         return $output;
-    }
-
-    private function getReportPath($report): string
-    {
-        $reportPath = Storage::path($report);
-        if (!file_exists($reportPath)) throw new ReportNotFoundException("Report file not found in $reportPath");
-        return $reportPath;
-    }
-
-    private function validateParameters(array $parameters): void
-    {
-        $reportParameters = $this->listParameters($this->reportPath);
-        foreach ($parameters as $parameterName => $parameterValue) {
-            if (! in_array($parameterName, $reportParameters)) throw new ParameterDoesntExistException("Parameter ($parameterName) doesnt exist in $this->reportPath");
-        }
-    }
-
-    public function listParameters(string $report): array
-    {
-        $reportPath = $this->getReportPath($report);
-        exec("$this->jasperStarter list_parameters $reportPath", $parameters);
-        return array_map(function($parameter) {
-            return Str::of($parameter)->after(' ')->beforeLast(' ')->__toString();
-        },$parameters);
     }
 }
